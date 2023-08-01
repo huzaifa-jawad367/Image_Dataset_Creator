@@ -1,0 +1,6 @@
+tkinter
+tkinterdnd2
+numpy
+pdf2image
+scikit-learn
+opencv-python-headless
