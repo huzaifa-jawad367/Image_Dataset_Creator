@@ -1,3 +1,13 @@
+"""
+dataset_creation module handles the processing of the dataset
+Dataset may include the following:
+- images (jpg, png, jpeg)
+- videos (mp4)
+- pdfs (pdf)
+
+Developed By : Huzaifa Jawad
+"""
+
 import numpy as np
 import pandas as pd
 import os

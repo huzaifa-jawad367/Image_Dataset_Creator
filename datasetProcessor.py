@@ -8,6 +8,8 @@ Dataset may include the following:
 Developed By : Huzaifa Jawad
 """
 
+from dataset_creation import *
+
 class DatasetEngine:
     """Main Data processing class"""
     
@@ -17,10 +19,11 @@ class DatasetEngine:
         parent.notify("Processing Complete!", 1)
         
         
-    def mainEngine(self, files):
+    def mainEngine(self, files, Name_of_dataset, augment = [False, False], size=224):
         """Main Engine"""
         
         # Your Code Here
+        convert_to_dataset(files, Name_of_dataset, augment, size)
         
         pass
 
