@@ -4,3 +4,4 @@ numpy
 pdf2image
 scikit-learn
 opencv-python-headless
+scikit-image

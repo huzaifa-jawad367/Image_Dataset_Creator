@@ -8,6 +8,7 @@ Dataset may include the following:
 Developed By : Huzaifa Jawad
 """
 
+
 import numpy as np
 import pandas as pd
 import os
@@ -16,11 +17,13 @@ import matplotlib.pyplot as plt
 from skimage.metrics import structural_similarity as ssim
 from pdf2image import convert_from_path
 
+
 def get_extension(file_path):
     """
     Returns the extension of a file
     """
     return file_path.split(".")[-1]
+
 
 def get_file_name(file_path):
     """
@@ -28,17 +31,20 @@ def get_file_name(file_path):
     """
     return file_path.split("/")[-1]
 
+
 def flip_image_horizontally(image):
     """
     Flips an image horizontally
     """
     return cv2.flip(image, 1)
 
+
 def flip_image_vertically(image):
     """
     Flips an image vertically
     """
     return cv2.flip(image, 0)
+
 
 def Padding_and_resizing(image, size=224):
     """
@@ -54,6 +60,7 @@ def Padding_and_resizing(image, size=224):
     image = cv2.resize(image, (size, size))
     return image
 
+
 def compare_ssim(cv2_image1, cv2_image2):
     # Convert images to grayscale if they are color
     if len(cv2_image1.shape) == 3 and cv2_image1.shape[2] == 3:
@@ -64,6 +71,7 @@ def compare_ssim(cv2_image1, cv2_image2):
     ssim_score, _ = ssim(cv2_image1, cv2_image2, full=True)
 
     return ssim_score
+
 
 def extract_frames_from_video(video_path, size=224, augment = [False, False]):
     """
@@ -82,15 +90,17 @@ def extract_frames_from_video(video_path, size=224, augment = [False, False]):
                 # is the previous frame similar to the current frame
                 if len(frames) > 0:
                     if augment[0] and augment[1]:
-                        if compare_ssim(frames[-3], frame) > 0.80:
+                        if compare_ssim(frames[-3], frame) > 0.90:
                             continue
                     elif (augment[0] and not augment[1]) or (augment[1] and not augment[0]):
-                        if compare_ssim(frames[-2], frame) > 0.80:
+                        if compare_ssim(frames[-2], frame) > 0.90:
                             continue
                     else:
-                        if compare_ssim(frames[-1], frame) > 0.80:
+                        if compare_ssim(frames[-1], frame) > 0.90:
                             continue
                 frames.append(frame)
+
+                # augment the frame
                 if augment[0]:
                     frames.append(flip_image_horizontally(frame))
                 if augment[1]:
@@ -121,11 +131,13 @@ def save_frames(frames, save_path):
     for i, frame in enumerate(frames):
         cv2.imwrite(os.path.join(save_path, str(i)+".jpg"), frame)
 
+
 def save_image(image, save_path):
     """
     Saves the image to a specified path
     """
     cv2.imwrite(save_path, image)
+
 
 def convert_to_dataset(list_of_file_paths, name_of_dataset, augment = [False, False], size=224):
     """
@@ -133,18 +145,29 @@ def convert_to_dataset(list_of_file_paths, name_of_dataset, augment = [False, Fa
     """
     count = 0
     for file_path in list_of_file_paths:
+        # get the extension of the file
         extension = get_extension(file_path)
+
+        # process pdf files
         if extension == "pdf":
             images = pdf_to_image(file_path, size)
             for i, image in enumerate(images):
-                save_image(image, f"{name_of_dataset}/" + str(count) + str(i)+".jpg")
+                save_image(image, f"Generated_datasets/{name_of_dataset}/" + str(count) + str(i)+".jpg")
+
+        # process image files
         elif extension == "jpg" or extension == "jpeg" or extension == "png":
-            save_image(Padding_and_resizing(cv2.imread(file_path), size), f"{name_of_dataset}/" + str(count)+ '0' + ".jpg")
+            save_image(Padding_and_resizing(cv2.imread(file_path), size), f"Generated_datasets/{name_of_dataset}/" + str(count)+ '0' + ".jpg")
+
+        # process video files
         elif extension in ["mp4", "avi", "mov", "webm"]:
             frames = extract_frames_from_video(file_path, size, augment)
             for i, frame in enumerate(frames):
-                save_image(frame, f"{name_of_dataset}/" + str(count) + str(i)+".jpg")
+                save_image(frame, f"Generated_datasets/{name_of_dataset}/" + str(count) + str(i)+".jpg")
 
         count += 1
             
 
+# imgs = pdf_to_image("test.pdf")
+# # save images in dataset_for_the_freelance_proj
+# for i, img in enumerate(imgs):
+#     save_image(img, "Generated_datasets/" + str(i)+".jpg")

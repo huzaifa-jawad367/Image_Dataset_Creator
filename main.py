@@ -76,7 +76,7 @@ class App:
                       font="Arial 12")
         self.Draglabel.place(relx=0.5, rely=0.56, anchor=CENTER)
         
-        btnFrame = Frame(root,width=100, height=500)
+        btnFrame = Frame(root,width=200, height=500)
         btnFrame.pack(side=LEFT, pady=0)
         btnFrame.pack_propagate(0)
 
@@ -89,7 +89,39 @@ class App:
                                width=8, bg=_alert, fg="white", font="Arial 10"
                                , command=self.process)
         processButton.pack(side=TOP, padx=10, pady=10)
-        
+
+        # Add 2 radio buttons for augmentation horizontal and vertical
+        self.augment = IntVar()
+        self.augment.set(0)
+        self.augmentCheck = Checkbutton(btnFrame, text="Augment horizontally", variable=self.augment, onvalue=1, offvalue=0, bg=_primary, font="Arial 10")
+        self.augmentCheck.pack(side=TOP, padx=10)
+
+        self.augment2 = IntVar()
+        self.augment2.set(0)
+        self.augmentCheck2 = Checkbutton(btnFrame, text="Augment vertically", variable=self.augment2, onvalue=1, offvalue=0, bg=_primary, font="Arial 10")
+        self.augmentCheck2.pack(side=TOP, padx=10)
+
+        # Enter the name of the dataset
+        self.label = Label(btnFrame, text="* Enter dataset name:", bg=_primary, font="Arial 10")
+        self.datasetName = Entry(btnFrame, width=20, bg=_primary, font="Arial 10")
+        self.label.pack(side=TOP, padx=20, pady=10)
+        self.datasetName.pack(side=TOP, padx=10, pady=10)
+        self.datasetName.insert(0, "dataset")
+
+        # Enter the desired size of the images in the dataset
+        self.label = Label(btnFrame, text="Enter image size:", bg=_primary, font="Arial 10")
+        self.imageSize = Entry(btnFrame, width=20, bg=_primary, font="Arial 10")
+        self.label.pack(side=TOP, padx=20, pady=10)
+        self.imageSize.pack(side=TOP, padx=10, pady=10)
+        self.imageSize.insert(0, 224)
+
+        # Enter a similarity threshold for the images between 0 and 1
+        self.label = Label(btnFrame, text="Enter similarity threshold:", bg=_primary, font="Arial 10")
+        self.similarityThreshold = Entry(btnFrame, width=20, bg=_primary, font="Arial 10")
+        self.label.pack(side=TOP, padx=20, pady=10)
+        self.similarityThreshold.pack(side=TOP, padx=10, pady=10)
+        self.similarityThreshold.insert(0, 0.9)
+
         removeButton.bind("<Enter>", self._enter)
         removeButton.bind("<Leave>", self._leave)
         
@@ -200,7 +232,7 @@ class App:
     
     def _process(self):
         """Process the files"""
-        dataset = DatasetEngine(self.files, self)
+        dataset = DatasetEngine(self.files, self, self.datasetName.get(), [self.augment.get(), self.augment2.get()], int(self.imageSize.get()))
         
         
 if __name__ == '__main__':
