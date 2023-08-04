@@ -8,5 +8,5 @@ Navigate to the directory where this code is present.
 pip install -r requirements.txt
 ```
 
-Install latest release of poppler (here)[https://github.com/oschwartz10612/poppler-windows/releases/]
+Install latest release of poppler [here](https://github.com/oschwartz10612/poppler-windows/releases/)
 
