@@ -116,11 +116,11 @@ class App:
         self.imageSize.insert(0, 224)
 
         # Enter a similarity threshold for the images between 0 and 1
-        self.label = Label(btnFrame, text="Enter similarity threshold:", bg=_primary, font="Arial 10")
-        self.similarityThreshold = Entry(btnFrame, width=20, bg=_primary, font="Arial 10")
-        self.label.pack(side=TOP, padx=20, pady=10)
-        self.similarityThreshold.pack(side=TOP, padx=10, pady=10)
-        self.similarityThreshold.insert(0, 0.9)
+        # self.label = Label(btnFrame, text="Enter similarity threshold:", bg=_primary, font="Arial 10")
+        # self.similarityThreshold = Entry(btnFrame, width=20, bg=_primary, font="Arial 10")
+        # self.label.pack(side=TOP, padx=20, pady=10)
+        # self.similarityThreshold.pack(side=TOP, padx=10, pady=10)
+        # self.similarityThreshold.insert(0, 0.9)
 
         removeButton.bind("<Enter>", self._enter)
         removeButton.bind("<Leave>", self._leave)
